@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Books | LibraryMS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/books.css') }}">
+
+    <style>
+
+        .books-container {
+            margin-top: 35px;
+        }
+
+        .book-section {
+            background: #141a26;
+            border: 1px solid #252d3d;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 25px;
+            border-bottom: 1px solid #252d3d;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            color: white;
+        }
+
+        .section-header p {
+            margin-top: 6px;
+            color: #7183a3;
+        }
+
+        .book-list {
+            padding: 10px 25px 20px;
+        }
+
+        .book-item {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 18px 0;
+            border-bottom: 1px solid #252d3d;
+        }
+
+        .book-item:last-child {
+            border-bottom: none;
+        }
+
+        .book-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: #252323;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+        }
+
+        .book-details {
+            flex: 1;
+        }
+
+        .book-details h3 {
+            margin: 0 0 5px;
+            color: white;
+        }
+
+        .book-details p {
+            margin: 0 0 6px;
+            color: #7183a3;
+        }
+
+        .book-details small {
+            color: #9aa7bd;
+        }
+
+        .status {
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .issued {
+            background: rgba(255, 170, 0, 0.12);
+            color: #ffb000;
+        }
+
+        .returned {
+            background: rgba(0, 200, 120, 0.12);
+            color: #00d084;
+        }
+
+        .empty {
+            padding: 45px 20px;
+            text-align: center;
+            color: #7183a3;
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        .empty h3 {
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .profile-box {
+            background: #141a26;
+            border: 1px solid #252d3d;
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .profile-box h2 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .profile-info {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .profile-item {
+            background: #101622;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .profile-item span {
+            display: block;
+            color: #7183a3;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .profile-item strong {
+            color: white;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 5px;
+            color: #ffb000;
+            text-decoration: none;
+        }
+
+        @media (max-width: 800px) {
+
+            .profile-info {
+                grid-template-columns: 1fr;
+            }
+
+            .book-item {
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= SIDEBAR ================= -->
+
+<aside class="sidebar">
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            📚
+        </div>
+
+        <div>
+
+            <h2>LibraryMS</h2>
+
+            <span>
+                Management System
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="menu-title">
+        MAIN MENU
+    </div>
+
+
+    <nav>
+
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-link">
+
+            <span>🏠</span>
+            <span>Dashboard</span>
+
+        </a>
+
+
+        <a href="{{ url_for('books') }}"
+           class="nav-link">
+
+            <span>📚</span>
+            <span>Books</span>
+
+        </a>
+
+
+        <a href="{{ url_for('my_books') }}"
+           class="nav-link active">
+
+            <span>📖</span>
+            <span>My Books</span>
+
+        </a>
+
+
+        {% if session.get("user_role") == "admin" %}
+
+        <div class="menu-title admin-title">
+            ADMINISTRATION
+        </div>
+
+
+        <a href="{{ url_for('add_book') }}"
+           class="nav-link">
+
+            <span>➕</span>
+            <span>Add Book</span>
+
+        </a>
+
+
+        <a href="{{ url_for('students') }}"
+           class="nav-link">
+
+            <span>👨‍🎓</span>
+            <span>Students</span>
+
+        </a>
+
+
+        <a href="{{ url_for('add_student') }}"
+           class="nav-link">
+
+            <span>👨‍🎓</span>
+            <span>Add Student</span>
+
+        </a>
+
+
+        <a href="{{ url_for('issue_book') }}"
+           class="nav-link">
+
+            <span>📖</span>
+            <span>Issue Book</span>
+
+        </a>
+
+
+        <a href="{{ url_for('return_book') }}"
+           class="nav-link">
+
+            <span>🔄</span>
+            <span>Return Book</span>
+
+        </a>
+
+        {% endif %}
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <div>
+
+                <strong>
+                    System Online
+                </strong>
+
+                <small>
+                    Library is active
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <a href="{{ url_for('logout') }}"
+           class="logout">
+
+            <span>🚪</span>
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="main-content">
+
+
+    <header class="topbar">
+
+        <div class="page-heading">
+
+            <span class="small-heading">
+                PERSONAL LIBRARY
+            </span>
+
+            <h1>
+                📖 My Books
+            </h1>
+
+            <p>
+                View your currently issued and returned books.
+            </p>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="profile-avatar">
+                👤
+            </div>
+
+            <div class="profile-info">
+
+                <strong>
+                    {{ student.name if student else session.get("user_name") }}
+                </strong>
+
+                <span>
+                    👤 Library User
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <div class="books-container">
+
+
+        <!-- ================= PROFILE ================= -->
+
+        {% if student %}
+
+        <section class="profile-box">
+
+            <h2>
+                👤 My Profile
+            </h2>
+
+            <div class="profile-info">
+
+                <div class="profile-item">
+
+                    <span>
+                        Name
+                    </span>
+
+                    <strong>
+                        {{ student.name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <span>
+                        Roll Number
+                    </span>
+
+                    <strong>
+                        {{ student.roll_no }}
+                    </strong>
+
+                </div>
+
+
+                <div class="profile-item">
+
+                    <span>
+                        Course
+                    </span>
+
+                    <strong>
+                        {{ student.course or "Not available" }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+
+        <!-- ================= ISSUED BOOKS ================= -->
+
+        <section class="book-section">
+
+            <div class="section-header">
+
+                <h2>
+                    📖 Currently Issued
+                </h2>
+
+                <p>
+                    Books currently issued to you
+                </p>
+
+            </div>
+
+
+            {% if issued_books %}
+
+            <div class="book-list">
+
+                {% for issue in issued_books %}
+
+                <div class="book-item">
+
+                    <div class="book-icon">
+                        📚
+                    </div>
+
+
+                    <div class="book-details">
+
+                        {% set book = book_map.get(issue.book_id) %}
+
+                        {% if book %}
+
+                        <h3>
+                            {{ book.book_name }}
+                        </h3>
+
+                        <p>
+                            Author: {{ book.author }}
+                        </p>
+
+                        {% else %}
+
+                        <h3>
+                            Book #{{ issue.book_id }}
+                        </h3>
+
+                        {% endif %}
+
+
+                        <small>
+                            Issued on: {{ issue.issue_date }}
+                        </small>
+
+                    </div>
+
+
+                    <span class="status issued">
+                        Issued
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    📚
+                </div>
+
+                <h3>
+                    No Books Issued
+                </h3>
+
+                <p>
+                    You don't currently have any books issued.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ================= RETURNED BOOKS ================= -->
+
+        <section class="book-section">
+
+            <div class="section-header">
+
+                <h2>
+                    🔄 Returned Books
+                </h2>
+
+                <p>
+                    Your previous borrowing history
+                </p>
+
+            </div>
+
+
+            {% if returned_books %}
+
+            <div class="book-list">
+
+                {% for issue in returned_books %}
+
+                <div class="book-item">
+
+                    <div class="book-icon">
+                        📚
+                    </div>
+
+
+                    <div class="book-details">
+
+                        {% set book = book_map.get(issue.book_id) %}
+
+                        {% if book %}
+
+                        <h3>
+                            {{ book.book_name }}
+                        </h3>
+
+                        <p>
+                            Author: {{ book.author }}
+                        </p>
+
+                        {% else %}
+
+                        <h3>
+                            Book #{{ issue.book_id }}
+                        </h3>
+
+                        {% endif %}
+
+
+                        <small>
+                            Issued: {{ issue.issue_date }}
+                            {% if issue.return_date %}
+                            &nbsp; | &nbsp;
+                            Returned: {{ issue.return_date }}
+                            {% endif %}
+                        </small>
+
+                    </div>
+
+
+                    <span class="status returned">
+                        Returned
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="empty">
+
+                <div class="empty-icon">
+                    🔄
+                </div>
+
+                <h3>
+                    No Return History
+                </h3>
+
+                <p>
+                    You haven't returned any books yet.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <a href="{{ url_for('dashboard') }}"
+           class="back-button">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+
+
+</main>
+
+
+</body>
+
+</html>

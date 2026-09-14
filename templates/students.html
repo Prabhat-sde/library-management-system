@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Library Students</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/students.css') }}">
+
+</head>
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                📚
+            </div>
+
+            <div>
+
+                <h2>LibraryMS</h2>
+
+                <span>
+                    Management System
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}"
+               class="nav-link">
+
+                <span>🏠</span>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('books') }}"
+               class="nav-link">
+
+                <span>📚</span>
+                <span>Books</span>
+
+            </a>
+
+
+            <a href="{{ url_for('students') }}"
+               class="nav-link active">
+
+                <span>👨‍🎓</span>
+                <span>Students</span>
+
+            </a>
+
+
+            {% if role == "admin" %}
+
+            <div class="menu-title admin-title">
+                ADMINISTRATION
+            </div>
+
+
+            <a href="{{ url_for('add_book') }}"
+               class="nav-link">
+
+                <span>➕</span>
+                <span>Add Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('add_student') }}"
+               class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Add Student</span>
+
+            </a>
+
+
+            <a href="{{ url_for('issue_book') }}"
+               class="nav-link">
+
+                <span>📖</span>
+                <span>Issue Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('return_book') }}"
+               class="nav-link">
+
+                <span>🔄</span>
+                <span>Return Book</span>
+
+            </a>
+
+            {% endif %}
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        System Online
+                    </strong>
+
+                    <small>
+                        Library is active
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}"
+               class="logout">
+
+                <span>🚪</span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+
+            <div class="page-heading">
+
+                <span class="small-heading">
+                    STUDENT MANAGEMENT
+                </span>
+
+                <h1>
+                    👨‍🎓 Students
+                </h1>
+
+                <p>
+                    View and manage registered library students.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ name }}
+                    </strong>
+
+
+                    {% if role == "admin" %}
+
+                    <span>
+                        👑 Administrator
+                    </span>
+
+                    {% else %}
+
+                    <span>
+                        👤 Library User
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- ================= STUDENT HEADER ================= -->
+
+        <section class="collection-header">
+
+
+            <div class="collection-info">
+
+
+                <div class="collection-icon">
+                    👨‍🎓
+                </div>
+
+
+                <div>
+
+                    <span>
+                        STUDENT DIRECTORY
+                    </span>
+
+                    <h2>
+                        Registered Students
+                    </h2>
+
+                    <p>
+                        Manage student records and information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if role == "admin" %}
+
+            <a href="{{ url_for('add_student') }}"
+               class="add-student-btn">
+
+                <span>＋</span>
+
+                Add Student
+
+            </a>
+
+            {% endif %}
+
+
+        </section>
+
+
+
+        <!-- ================= TABLE ================= -->
+
+        <section class="table-card">
+
+
+            <div class="table-top">
+
+
+                <div>
+
+                    <h3>
+                        Student Directory
+                    </h3>
+
+                    <p>
+                        All registered students
+                    </p>
+
+                </div>
+
+
+                <div class="student-count">
+
+                    👨‍🎓
+
+                    <span>
+                        {{ students|length }}
+                    </span>
+
+                    Students
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="table-wrapper">
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                STUDENT
+                            </th>
+
+                            <th>
+                                ROLL NO
+                            </th>
+
+                            <th>
+                                EMAIL
+                            </th>
+
+                            <th>
+                                PHONE
+                            </th>
+
+                            <th>
+                                COURSE
+                            </th>
+
+
+                            {% if role == "admin" %}
+
+                            <th>
+                                ACTION
+                            </th>
+
+                            {% endif %}
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for student in students %}
+
+                        <tr>
+
+
+                            <!-- ID -->
+
+                            <td>
+
+                                <span class="student-id">
+                                    #{{ student.id }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- STUDENT -->
+
+                            <td>
+
+                                <div class="student-info">
+
+                                    <div class="student-avatar">
+
+                                        {{ student.name[0]|upper }}
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong>
+                                            {{ student.name }}
+                                        </strong>
+
+                                        <small>
+                                            Library Student
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- ROLL NUMBER -->
+
+                            <td>
+
+                                <span class="roll-number">
+
+                                    {{ student.roll_no }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- EMAIL -->
+
+                            <td>
+
+                                <span class="email">
+
+                                    ✉️ {{ student.email }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- PHONE -->
+
+                            <td>
+
+                                <span class="phone">
+
+                                    📱 {{ student.phone }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- COURSE -->
+
+                            <td>
+
+                                <span class="course">
+
+                                    {{ student.course }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            {% if role == "admin" %}
+
+                            <td>
+
+                                <div class="actions">
+
+
+                                    <a href="{{ url_for('edit_student', id=student.id) }}"
+                                       class="edit-btn">
+
+                                        ✏️ Edit
+
+                                    </a>
+
+
+                                    <a href="{{ url_for('delete_student', id=student.id) }}"
+                                       class="delete-btn"
+                                       onclick="return confirm('Delete this student?')">
+
+                                        🗑 Delete
+
+                                    </a>
+
+
+                                </div>
+
+                            </td>
+
+                            {% endif %}
+
+
+                        </tr>
+
+
+                        {% else %}
+
+                        <tr>
+
+                            <td colspan="7"
+                                class="empty-state">
+
+                                <div>
+                                    👨‍🎓
+                                </div>
+
+                                <h3>
+                                    No Students Found
+                                </h3>
+
+                                <p>
+                                    There are currently no registered students.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- BACK -->
+
+        <a href="{{ url_for('dashboard') }}"
+           class="back">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+    </main>
+
+
+</body>
+
+</html>

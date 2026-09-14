@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Student History | LibraryMS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/student_history.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            📚
+        </div>
+
+        <div>
+
+            <h2>
+                LibraryMS
+            </h2>
+
+            <span>
+                Management System
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="menu-title">
+        MAIN MENU
+    </div>
+
+
+    <nav>
+
+
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-link">
+
+            <span>🏠</span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('books') }}"
+           class="nav-link">
+
+            <span>📚</span>
+
+            <span>
+                Books
+            </span>
+
+        </a>
+
+
+        <div class="menu-title admin-title">
+            ADMINISTRATION
+        </div>
+
+
+        <a href="{{ url_for('add_book') }}"
+           class="nav-link">
+
+            <span>➕</span>
+
+            <span>
+                Add Book
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('students') }}"
+           class="nav-link">
+
+            <span>👨‍🎓</span>
+
+            <span>
+                Students
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('add_student') }}"
+           class="nav-link">
+
+            <span>👨‍🎓</span>
+
+            <span>
+                Add Student
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('issue_book') }}"
+           class="nav-link">
+
+            <span>📖</span>
+
+            <span>
+                Issue Book
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('return_book') }}"
+           class="nav-link">
+
+            <span>🔄</span>
+
+            <span>
+                Return Book
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('student_history') }}"
+           class="nav-link active">
+
+            <span>📊</span>
+
+            <span>
+                Student History
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+    <!-- SIDEBAR BOTTOM -->
+
+    <div class="sidebar-bottom">
+
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <div>
+
+                <strong>
+                    System Online
+                </strong>
+
+                <small>
+                    Library is active
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <a href="{{ url_for('logout') }}"
+           class="logout">
+
+            <span>🚪</span>
+
+            Logout
+
+        </a>
+
+    </div>
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main-content">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+
+        <div class="page-heading">
+
+            <span class="small-heading">
+                LIBRARY MANAGEMENT
+            </span>
+
+            <h1>
+                📊 Student Book History
+            </h1>
+
+            <p>
+                Check issued and returned books of any student.
+            </p>
+
+        </div>
+
+
+        <div class="profile">
+
+
+            <div class="profile-avatar">
+                👤
+            </div>
+
+
+            <div class="profile-info">
+
+                <strong>
+                    {{ name }}
+                </strong>
+
+                <span>
+                    👑 Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =====================================================
+         SELECT STUDENT
+    ===================================================== -->
+
+    <section class="selection-card">
+
+
+        <div class="selection-heading">
+
+            <div class="selection-icon">
+                👨‍🎓
+            </div>
+
+            <div>
+
+                <span>
+                    STUDENT SEARCH
+                </span>
+
+                <h2>
+                    Select Student
+                </h2>
+
+                <p>
+                    Select a student to view their complete book history.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form method="GET"
+              action="{{ url_for('student_history') }}"
+              class="student-form">
+
+
+            <select name="student_id"
+                    required>
+
+                <option value="">
+                    -- Select Student --
+                </option>
+
+
+                {% for student_item in students %}
+
+                <option
+                    value="{{ student_item.id }}"
+                    {% if selected_student and selected_student.id == student_item.id %}
+                    selected
+                    {% endif %}>
+
+                    {{ student_item.name }}
+                    — {{ student_item.roll_no }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <button type="submit">
+
+                🔍 View History
+
+            </button>
+
+
+        </form>
+
+    </section>
+
+
+
+    {% if selected_student %}
+
+
+    <!-- =====================================================
+         STUDENT PROFILE
+    ===================================================== -->
+
+    <section class="student-profile-card">
+
+
+        <div class="student-avatar">
+            👨‍🎓
+        </div>
+
+
+        <div class="student-details">
+
+            <span>
+                STUDENT PROFILE
+            </span>
+
+            <h2>
+                {{ selected_student.name }}
+            </h2>
+
+            <p>
+                {{ selected_student.email or "Email not available" }}
+            </p>
+
+        </div>
+
+
+        <div class="student-meta">
+
+            <div>
+
+                <span>
+                    Roll Number
+                </span>
+
+                <strong>
+                    {{ selected_student.roll_no }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Course
+                </span>
+
+                <strong>
+                    {{ selected_student.course or "Not available" }}
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Phone
+                </span>
+
+                <strong>
+                    {{ selected_student.phone or "Not available" }}
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         SUMMARY
+    ===================================================== -->
+
+    <section class="summary-grid">
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                📖
+            </div>
+
+            <div>
+
+                <span>
+                    CURRENTLY ISSUED
+                </span>
+
+                <h2>
+                    {{ issued_books|length }}
+                </h2>
+
+                <p>
+                    Books currently with student
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                🔄
+            </div>
+
+            <div>
+
+                <span>
+                    RETURNED BOOKS
+                </span>
+
+                <h2>
+                    {{ returned_books|length }}
+                </h2>
+
+                <p>
+                    Books returned by student
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+                📚
+            </div>
+
+            <div>
+
+                <span>
+                    TOTAL HISTORY
+                </span>
+
+                <h2>
+                    {{ issued_books|length + returned_books|length }}
+                </h2>
+
+                <p>
+                    Total borrowing records
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         CURRENTLY ISSUED
+    ===================================================== -->
+
+    <section class="history-card">
+
+
+        <div class="history-header">
+
+            <div>
+
+                <span>
+                    CURRENT BOOKS
+                </span>
+
+                <h2>
+                    📖 Currently Issued
+                </h2>
+
+                <p>
+                    Books that are currently with this student.
+                </p>
+
+            </div>
+
+
+            <div class="count-badge issued-badge">
+
+                {{ issued_books|length }}
+
+                Issued
+
+            </div>
+
+        </div>
+
+
+
+        {% if issued_books %}
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            BOOK
+                        </th>
+
+                        <th>
+                            AUTHOR
+                        </th>
+
+                        <th>
+                            CATEGORY
+                        </th>
+
+                        <th>
+                            ISSUE DATE
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for issue in issued_books %}
+
+                    {% set book = Book.query.get(issue.book_id) %}
+
+
+                    <tr>
+
+                        <td>
+
+                            <div class="book-info">
+
+                                <div class="book-icon">
+                                    📚
+                                </div>
+
+                                <div>
+
+                                    {% if book %}
+
+                                    <strong>
+                                        {{ book.book_name }}
+                                    </strong>
+
+                                    {% else %}
+
+                                    <strong>
+                                        Book Not Found
+                                    </strong>
+
+                                    {% endif %}
+
+                                    <small>
+                                        Book ID #{{ issue.book_id }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if book %}
+                                {{ book.author }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if book %}
+                                {{ book.category or "General" }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ issue.issue_date }}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="status issued">
+                                ● Issued
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="empty-state">
+
+            <div>
+                📚
+            </div>
+
+            <h3>
+                No Currently Issued Books
+            </h3>
+
+            <p>
+                This student does not have any books currently issued.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- =====================================================
+         RETURNED BOOKS
+    ===================================================== -->
+
+    <section class="history-card">
+
+
+        <div class="history-header">
+
+            <div>
+
+                <span>
+                    BOOK HISTORY
+                </span>
+
+                <h2>
+                    🔄 Returned Books
+                </h2>
+
+                <p>
+                    Books previously issued and returned by this student.
+                </p>
+
+            </div>
+
+
+            <div class="count-badge returned-badge">
+
+                {{ returned_books|length }}
+
+                Returned
+
+            </div>
+
+        </div>
+
+
+
+        {% if returned_books %}
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            BOOK
+                        </th>
+
+                        <th>
+                            AUTHOR
+                        </th>
+
+                        <th>
+                            CATEGORY
+                        </th>
+
+                        <th>
+                            ISSUE DATE
+                        </th>
+
+                        <th>
+                            RETURN DATE
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for issue in returned_books %}
+
+                    {% set book = Book.query.get(issue.book_id) %}
+
+
+                    <tr>
+
+                        <td>
+
+                            <div class="book-info">
+
+                                <div class="book-icon">
+                                    📚
+                                </div>
+
+                                <div>
+
+                                    {% if book %}
+
+                                    <strong>
+                                        {{ book.book_name }}
+                                    </strong>
+
+                                    {% else %}
+
+                                    <strong>
+                                        Book Not Found
+                                    </strong>
+
+                                    {% endif %}
+
+                                    <small>
+                                        Book ID #{{ issue.book_id }}
+                                    </small>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if book %}
+                                {{ book.author }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if book %}
+                                {{ book.category or "General" }}
+                            {% else %}
+                                —
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ issue.issue_date }}
+
+                        </td>
+
+
+                        <td>
+
+                            {{ issue.return_date or "—" }}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="status returned">
+                                ● Returned
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        {% else %}
+
+
+        <div class="empty-state">
+
+            <div>
+                🔄
+            </div>
+
+            <h3>
+                No Returned Books
+            </h3>
+
+            <p>
+                This student has no returned book history yet.
+            </p>
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+    {% else %}
+
+
+    <!-- =====================================================
+         NO STUDENT SELECTED
+    ===================================================== -->
+
+    <section class="welcome-card">
+
+        <div class="welcome-icon">
+            👨‍🎓
+        </div>
+
+        <h2>
+            Select a Student
+        </h2>
+
+        <p>
+            Choose a student from the dropdown above to see
+            their issued and returned book history.
+        </p>
+
+    </section>
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>

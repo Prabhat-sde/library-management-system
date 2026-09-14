@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Return Book | LibraryMS</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/return.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                📚
+            </div>
+
+            <div>
+
+                <h2>LibraryMS</h2>
+
+                <span>Management System</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <nav>
+
+
+            <a href="{{ url_for('dashboard') }}" class="nav-link">
+
+                <span>🏠</span>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('books') }}" class="nav-link">
+
+                <span>📚</span>
+                <span>Books</span>
+
+            </a>
+
+
+            <a href="{{ url_for('students') }}" class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Students</span>
+
+            </a>
+
+
+            <div class="menu-title admin-title">
+                ADMINISTRATION
+            </div>
+
+
+            <a href="{{ url_for('add_book') }}" class="nav-link">
+
+                <span>➕</span>
+                <span>Add Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('add_student') }}" class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Add Student</span>
+
+            </a>
+
+
+            <a href="{{ url_for('issue_book') }}" class="nav-link">
+
+                <span>📖</span>
+                <span>Issue Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('return_book') }}" class="nav-link active">
+
+                <span>🔄</span>
+                <span>Return Book</span>
+
+            </a>
+
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        System Online
+                    </strong>
+
+                    <small>
+                        Library is active
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}" class="logout">
+
+                <span>🚪</span>
+                Logout
+
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+
+            <div class="page-heading">
+
+                <span class="small-heading">
+                    BOOK TRANSACTIONS
+                </span>
+
+                <h1>
+                    🔄 Return Book
+                </h1>
+
+                <p>
+                    Manage returned library books.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ session["user_name"] }}
+                    </strong>
+
+
+                    {% if session["user_role"] == "admin" %}
+
+                    <span>
+                        👑 Administrator
+                    </span>
+
+                    {% else %}
+
+                    <span>
+                        👤 User
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content-grid">
+
+
+            <!-- RETURN FORM -->
+
+            <div class="return-card">
+
+
+                <div class="card-heading">
+
+
+                    <div class="heading-icon">
+                        🔄
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Return Issued Book
+                        </h2>
+
+                        <p>
+                            Select an issued book to process its return.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                {% if issued_books %}
+
+
+                <form method="POST" action="{{ url_for('return_book') }}">
+
+
+                    <div class="form-group">
+
+
+                        <label for="issue_id">
+                            Select Issued Book
+                        </label>
+
+
+                        <div class="select-wrapper">
+
+
+                            <span class="select-icon">
+                                📖
+                            </span>
+
+
+                            <select name="issue_id" id="issue_id" required>
+
+
+                                <option value="">
+                                    -- Select Issued Book --
+                                </option>
+
+
+                                {% for issue in issued_books %}
+
+
+                                <option value="{{ issue.id }}">
+
+                                    Issue #{{ issue.id }}
+
+                                    — Book ID:
+                                    {{ issue.book_id }}
+
+                                    — Student ID:
+                                    {{ issue.student_id }}
+
+                                    — Issued:
+                                    {{ issue.issue_date }}
+
+                                </option>
+
+
+                                {% endfor %}
+
+
+                            </select>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="info-box">
+
+
+                        <div class="info-icon">
+                            🔄
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Return Information
+                            </strong>
+
+                            <p>
+                                Returning this book will automatically
+                                increase its available quantity.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <button type="submit" class="return-btn">
+
+                        <span>
+                            🔄
+                        </span>
+
+                        Return Book
+
+                    </button>
+
+
+                </form>
+
+
+                {% else %}
+
+
+                <!-- EMPTY STATE -->
+
+                <div class="empty-state">
+
+
+                    <div class="empty-icon">
+                        📚
+                    </div>
+
+
+                    <h3>
+                        No Issued Books
+                    </h3>
+
+
+                    <p>
+                        There are currently no books
+                        waiting to be returned.
+                    </p>
+
+
+                    <a href="{{ url_for('issue_book') }}" class="issue-link">
+
+                        📖 Issue a Book
+
+                    </a>
+
+
+                </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+
+
+            <!-- RIGHT INFORMATION CARD -->
+
+            <div class="info-card">
+
+
+                <div class="return-visual">
+
+
+                    <div class="visual-glow"></div>
+
+
+                    <div class="visual-icon">
+                        🔄
+                    </div>
+
+
+                </div>
+
+
+                <span class="info-label">
+                    BOOK RETURN PROCESS
+                </span>
+
+
+                <h2>
+                    Complete a Return
+                </h2>
+
+
+                <p>
+                    Select an active issue record to
+                    return the book and update its
+                    availability automatically.
+                </p>
+
+
+
+                <div class="steps">
+
+
+                    <div class="step">
+
+
+                        <div class="step-number">
+                            1
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Select Issue
+                            </strong>
+
+                            <small>
+                                Choose the active issue record.
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="step">
+
+
+                        <div class="step-number">
+                            2
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Confirm Return
+                            </strong>
+
+                            <small>
+                                Submit the return request.
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="step">
+
+
+                        <div class="step-number">
+                            3
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Update Library
+                            </strong>
+
+                            <small>
+                                Book quantity is updated automatically.
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="status-box">
+
+                    <span class="status-dot"></span>
+
+                    Return system ready
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

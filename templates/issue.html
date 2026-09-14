@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Issue Book | LibraryMS</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/issue.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                📚
+            </div>
+
+            <div>
+
+                <h2>LibraryMS</h2>
+
+                <span>Management System</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <nav>
+
+
+            <a href="{{ url_for('dashboard') }}" class="nav-link">
+
+                <span>🏠</span>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('books') }}" class="nav-link">
+
+                <span>📚</span>
+                <span>Books</span>
+
+            </a>
+
+
+            <a href="{{ url_for('students') }}" class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Students</span>
+
+            </a>
+
+
+            <div class="menu-title admin-title">
+                ADMINISTRATION
+            </div>
+
+
+            <a href="{{ url_for('add_book') }}" class="nav-link">
+
+                <span>➕</span>
+                <span>Add Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('add_student') }}" class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Add Student</span>
+
+            </a>
+
+
+            <a href="{{ url_for('issue_book') }}" class="nav-link active">
+
+                <span>📖</span>
+                <span>Issue Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('return_book') }}" class="nav-link">
+
+                <span>🔄</span>
+                <span>Return Book</span>
+
+            </a>
+
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        System Online
+                    </strong>
+
+                    <small>
+                        Library is active
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}" class="logout">
+
+                <span>🚪</span>
+                Logout
+
+            </a>
+
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+
+            <div class="page-heading">
+
+                <span class="small-heading">
+                    BOOK TRANSACTIONS
+                </span>
+
+                <h1>
+                    📖 Issue Book
+                </h1>
+
+                <p>
+                    Issue a book to a registered student.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ session["user_name"] }}
+                    </strong>
+
+
+                    {% if session["user_role"] == "admin" %}
+
+                    <span>
+                        👑 Administrator
+                    </span>
+
+                    {% else %}
+
+                    <span>
+                        👤 User
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content-grid">
+
+
+            <!-- ISSUE FORM -->
+
+            <div class="issue-card">
+
+
+                <div class="card-heading">
+
+
+                    <div class="heading-icon">
+                        📖
+                    </div>
+
+
+                    <div>
+
+                        <h2>
+                            Issue a Book
+                        </h2>
+
+                        <p>
+                            Select a student and available book.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <form method="POST" action="{{ url_for('issue_book') }}">
+
+
+                    <!-- STUDENT -->
+
+                    <div class="form-group">
+
+
+                        <label for="student_id">
+                            Select Student
+                        </label>
+
+
+                        <div class="select-wrapper">
+
+
+                            <span class="select-icon">
+                                👨‍🎓
+                            </span>
+
+
+                            <select name="student_id" id="student_id" required>
+
+
+                                <option value="">
+                                    -- Select Student --
+                                </option>
+
+
+                                {% for student in students %}
+
+
+                                <option value="{{ student.id }}">
+
+                                    {{ student.name }}
+                                    - {{ student.roll_no }}
+
+                                </option>
+
+
+                                {% endfor %}
+
+
+                            </select>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- BOOK -->
+
+                    <div class="form-group">
+
+
+                        <label for="book_id">
+                            Select Book
+                        </label>
+
+
+                        <div class="select-wrapper">
+
+
+                            <span class="select-icon">
+                                📚
+                            </span>
+
+
+                            <select name="book_id" id="book_id" required>
+
+
+                                <option value="">
+                                    -- Select Book --
+                                </option>
+
+
+                                {% for book in books %}
+
+
+                                <option value="{{ book.id }}">
+
+                                    {{ book.book_name }}
+                                    - {{ book.author }}
+
+                                    (Available:
+                                    {{ book.quantity }})
+
+                                </option>
+
+
+                                {% endfor %}
+
+
+                            </select>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- DATE INFO -->
+
+                    <div class="date-box">
+
+
+                        <div class="date-icon">
+                            📅
+                        </div>
+
+
+                        <div>
+
+                            <strong>
+                                Issue Date
+                            </strong>
+
+                            <p>
+                                Today's date will be recorded
+                                automatically.
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- BUTTON -->
+
+                    <button type="submit" class="issue-btn">
+
+                        <span>📖</span>
+
+                        Issue Book
+
+                    </button>
+
+
+                </form>
+
+
+            </div>
+
+
+
+            <!-- RIGHT INFO CARD -->
+
+            <div class="info-card">
+
+
+                <div class="transaction-icon">
+
+                    <div class="icon-main">
+                        📚
+                    </div>
+
+                    <div class="icon-glow"></div>
+
+                </div>
+
+
+                <span class="info-label">
+                    LIBRARY TRANSACTION
+                </span>
+
+
+                <h2>
+                    Issue a Book
+                </h2>
+
+
+                <p>
+                    Create an issue record by selecting
+                    a registered student and an available
+                    book from the library.
+                </p>
+
+
+
+                <div class="steps">
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            1
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Select Student
+                            </strong>
+
+                            <small>
+                                Choose a registered student.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            2
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Select Book
+                            </strong>
+
+                            <small>
+                                Choose an available book.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="step">
+
+                        <div class="step-number">
+                            3
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Issue
+                            </strong>
+
+                            <small>
+                                Record the book transaction.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="status-box">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+                        Issue system ready
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

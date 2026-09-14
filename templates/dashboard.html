@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% if role == "admin" %}
+            Admin Dashboard | LibraryMS
+        {% else %}
+            Student Dashboard | LibraryMS
+        {% endif %}
+    </title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside class="sidebar">
+
+
+    <!-- BRAND -->
+
+    <div class="brand">
+
+        <div class="brand-icon">
+            📚
+        </div>
+
+        <div>
+
+            <h2>
+                LibraryMS
+            </h2>
+
+            <span>
+                Management System
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="menu-title">
+        MAIN MENU
+    </div>
+
+
+    <nav>
+
+
+        <!-- DASHBOARD -->
+
+        <a href="{{ url_for('dashboard') }}"
+           class="nav-link active">
+
+            <span>🏠</span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <!-- BOOKS -->
+
+        <a href="{{ url_for('books') }}"
+           class="nav-link">
+
+            <span>📚</span>
+
+            <span>
+                Browse Books
+            </span>
+
+        </a>
+
+
+        <!-- USER ONLY -->
+
+        {% if role == "user" %}
+
+        <a href="{{ url_for('my_books') }}"
+           class="nav-link">
+
+            <span>📖</span>
+
+            <span>
+                My Books
+            </span>
+
+        </a>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             ADMIN MENU
+        ================================================= -->
+
+        {% if role == "admin" %}
+
+        <div class="menu-title admin-title">
+            ADMINISTRATION
+        </div>
+
+
+        <a href="{{ url_for('add_book') }}"
+           class="nav-link">
+
+            <span>➕</span>
+
+            <span>
+                Add Book
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('students') }}"
+           class="nav-link">
+
+            <span>👨‍🎓</span>
+
+            <span>
+                Students
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('add_student') }}"
+           class="nav-link">
+
+            <span>👨‍🎓</span>
+
+            <span>
+                Add Student
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('issue_book') }}"
+           class="nav-link">
+
+            <span>📖</span>
+
+            <span>
+                Issue Book
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('return_book') }}"
+           class="nav-link">
+
+            <span>🔄</span>
+
+            <span>
+                Return Book
+            </span>
+
+        </a>
+
+
+        <a href="{{ url_for('student_history') }}"
+           class="nav-link">
+
+            <span>📊</span>
+
+            <span>
+                Student History
+            </span>
+
+        </a>
+
+
+        {% endif %}
+
+    </nav>
+
+
+    <!-- SIDEBAR BOTTOM -->
+
+    <div class="sidebar-bottom">
+
+
+        <div class="system-status">
+
+            <span class="status-dot"></span>
+
+            <div>
+
+                <strong>
+                    System Online
+                </strong>
+
+                <small>
+                    Library is active
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <a href="{{ url_for('logout') }}"
+           class="logout">
+
+            <span>🚪</span>
+
+            Logout
+
+        </a>
+
+    </div>
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="main-content">
+
+
+    <!-- =================================================
+         TOPBAR
+    ================================================= -->
+
+    <header class="topbar">
+
+
+        <div class="welcome-heading">
+
+
+            {% if role == "admin" %}
+
+            <span class="small-heading">
+                ADMIN OVERVIEW
+            </span>
+
+            <h1>
+                Good Evening, {{ name }} 👋
+            </h1>
+
+            <p>
+                Manage your library from one place.
+            </p>
+
+
+            {% else %}
+
+            <span class="small-heading">
+                STUDENT DASHBOARD
+            </span>
+
+            <h1>
+                Welcome, {{ name }} 👋
+            </h1>
+
+            <p>
+                Manage your books and library activity.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- PROFILE -->
+
+        <a href="{{ url_for('profile') }}"
+           class="profile">
+
+
+            <div class="profile-avatar">
+                👤
+            </div>
+
+
+            <div class="profile-info">
+
+                <strong>
+                    {{ name }}
+                </strong>
+
+
+                {% if role == "admin" %}
+
+                <span>
+                    👑 Administrator
+                </span>
+
+                {% else %}
+
+                <span>
+                    🎓 Student
+                </span>
+
+                {% endif %}
+
+            </div>
+
+        </a>
+
+    </header>
+
+
+
+    <!-- =================================================
+         ADMIN DASHBOARD
+    ================================================= -->
+
+    {% if role == "admin" %}
+
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+
+        <!-- BOOKS -->
+
+        <div class="stat-card books-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <span class="stat-label">
+                    BOOKS
+                </span>
+
+            </div>
+
+            <h2>
+                {{ total_books }}
+            </h2>
+
+            <p>
+                Total books available
+            </p>
+
+            <div class="stat-line"></div>
+
+        </div>
+
+
+        <!-- STUDENTS -->
+
+        <div class="stat-card students-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    👨‍🎓
+                </div>
+
+                <span class="stat-label">
+                    STUDENTS
+                </span>
+
+            </div>
+
+            <h2>
+                {{ total_students }}
+            </h2>
+
+            <p>
+                Registered students
+            </p>
+
+            <div class="stat-line"></div>
+
+        </div>
+
+
+        <!-- ISSUED -->
+
+        <div class="stat-card issued-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    📖
+                </div>
+
+                <span class="stat-label">
+                    ISSUED
+                </span>
+
+            </div>
+
+            <h2>
+                {{ total_issued }}
+            </h2>
+
+            <p>
+                Currently issued
+            </p>
+
+            <div class="stat-line"></div>
+
+        </div>
+
+
+        <!-- RETURNED -->
+
+        <div class="stat-card returned-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    🔄
+                </div>
+
+                <span class="stat-label">
+                    RETURNED
+                </span>
+
+            </div>
+
+            <h2>
+                {{ total_returned }}
+            </h2>
+
+            <p>
+                Successfully returned
+            </p>
+
+            <div class="stat-line"></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ADMIN GRID -->
+
+    <section class="dashboard-grid">
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="quick-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        SHORTCUTS
+                    </span>
+
+                    <h2>
+                        Quick Actions
+                    </h2>
+
+                </div>
+
+                <div class="section-icon">
+                    ⚡
+                </div>
+
+            </div>
+
+
+            <div class="action-grid">
+
+
+                <a href="{{ url_for('books') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        📚
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            View Books
+                        </h3>
+
+                        <p>
+                            Explore library collection
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('add_book') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        ➕
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Add Book
+                        </h3>
+
+                        <p>
+                            Add a new book
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('add_student') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        👨‍🎓
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Add Student
+                        </h3>
+
+                        <p>
+                            Register a student
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('issue_book') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        📖
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Issue Book
+                        </h3>
+
+                        <p>
+                            Issue book to student
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('return_book') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        🔄
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Return Book
+                        </h3>
+
+                        <p>
+                            Process book return
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <a href="{{ url_for('students') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+                        👨‍🎓
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            View Students
+                        </h3>
+
+                        <p>
+                            Manage student records
+                        </p>
+
+                    </div>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ADMIN STATUS -->
+
+        <div class="status-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        SYSTEM
+                    </span>
+
+                    <h2>
+                        Library Status
+                    </h2>
+
+                </div>
+
+                <div class="section-icon">
+                    📊
+                </div>
+
+            </div>
+
+
+            <div class="status-card">
+
+
+                <div class="status-header">
+
+                    <div class="big-status-icon">
+                        📚
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Library Active
+                        </h3>
+
+                        <p>
+                            All systems are running normally.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+                        Books Collection
+                    </span>
+
+                    <strong>
+                        {{ total_books }}
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+                        Registered Students
+                    </span>
+
+                    <strong>
+                        {{ total_students }}
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+                        Books Issued
+                    </span>
+
+                    <strong>
+                        {{ total_issued }}
+                    </strong>
+
+                </div>
+
+
+                <div class="status-item">
+
+                    <span>
+                        Books Returned
+                    </span>
+
+                    <strong>
+                        {{ total_returned }}
+                    </strong>
+
+                </div>
+
+
+                <div class="online-badge">
+
+                    <span></span>
+
+                    System Operational
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ADMIN BANNER -->
+
+    <section class="library-banner">
+
+        <div class="banner-content">
+
+            <span class="banner-icon">
+                📚
+            </span>
+
+            <div>
+
+                <span class="banner-small">
+                    LIBRARY MANAGEMENT SYSTEM
+                </span>
+
+                <h2>
+                    Everything you need to manage your library.
+                </h2>
+
+                <p>
+                    Manage books, students, issue and return operations
+                    from one place.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         STUDENT DASHBOARD
+    ================================================= -->
+
+    {% else %}
+
+
+    <!-- STUDENT STATS -->
+
+    <section class="stats student-stats">
+
+
+        <!-- LIBRARY BOOKS -->
+
+        <div class="stat-card books-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    📚
+                </div>
+
+                <span class="stat-label">
+                    LIBRARY
+                </span>
+
+            </div>
+
+            <h2>
+                {{ total_books }}
+            </h2>
+
+            <p>
+                Total books available
+            </p>
+
+            <div class="stat-line"></div>
+
+        </div>
+
+
+        <!-- MY ISSUED -->
+
+        <div class="stat-card issued-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    📖
+                </div>
+
+                <span class="stat-label">
+                    MY BOOKS
+                </span>
+
+            </div>
+
+            <h2>
+                {{ my_issued_count }}
+            </h2>
+
+            <p>
+                Currently issued to you
+            </p>
+
+            <div class="stat-line"></div>
+
+        </div>
+
+
+        <!-- MY RETURNED -->
+
+        <div class="stat-card returned-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    🔄
+                </div>
+
+                <span class="stat-label">
+                    HISTORY
+                </span>
+
+            </div>
+
+            <h2>
+                {{ my_returned_count }}
+            </h2>
+
+            <p>
+                Books returned by you
+            </p>
+
+            <div class="stat-line"></div>
+
+        </div>
+
+
+        <!-- PROFILE -->
+
+        <div class="stat-card profile-card">
+
+            <div class="stat-top">
+
+                <div class="stat-icon">
+                    🎓
+                </div>
+
+                <span class="stat-label">
+                    PROFILE
+                </span>
+
+            </div>
+
+
+            {% if student %}
+
+            <h2 class="profile-roll">
+                {{ student.roll_no }}
+            </h2>
+
+            <p>
+                Student ID / Roll Number
+            </p>
+
+            {% else %}
+
+            <h2>
+                —
+            </h2>
+
+            <p>
+                Profile not linked
+            </p>
+
+            {% endif %}
+
+
+            <div class="stat-line"></div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- STUDENT MAIN GRID -->
+
+    <section class="dashboard-grid student-dashboard-grid">
+
+
+        <!-- =================================================
+             MY BOOKS
+        ================================================= -->
+
+        <div class="quick-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        PERSONAL LIBRARY
+                    </span>
+
+                    <h2>
+                        My Books
+                    </h2>
+
+                </div>
+
+                <div class="section-icon">
+                    📖
+                </div>
+
+            </div>
+
+
+            {% if my_book_details %}
+
+
+            <div class="my-books-list">
+
+
+                {% for item in my_book_details %}
+
+
+                <div class="my-book-item">
+
+
+                    <div class="book-icon">
+                        📚
+                    </div>
+
+
+                    <div class="book-info">
+
+
+                        {% if item.book %}
+
+                        <h3>
+                            {{ item.book.book_name }}
+                        </h3>
+
+                        <p>
+                            {{ item.book.author }}
+                        </p>
+
+                        {% else %}
+
+                        <h3>
+                            Book
+                        </h3>
+
+                        <p>
+                            Book information unavailable
+                        </p>
+
+                        {% endif %}
+
+
+                        <span>
+                            Issued:
+                            {{ item.issue.issue_date }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="book-status">
+                        Issued
+                    </div>
+
+
+                </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+            <a href="{{ url_for('my_books') }}"
+               class="view-all">
+
+                View My Books →
+
+            </a>
+
+
+            {% else %}
+
+
+            <div class="empty-state">
+
+                <div>
+                    📚
+                </div>
+
+                <h3>
+                    No books issued
+                </h3>
+
+                <p>
+                    You don't currently have any books issued.
+                </p>
+
+                <a href="{{ url_for('books') }}"
+                   class="browse-button">
+
+                    Browse Books
+
+                </a>
+
+            </div>
+
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- =================================================
+             STUDENT PROFILE
+        ================================================= -->
+
+        <div class="status-section">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <span>
+                        MY PROFILE
+                    </span>
+
+                    <h2>
+                        Student Details
+                    </h2>
+
+                </div>
+
+                <div class="section-icon">
+                    🎓
+                </div>
+
+            </div>
+
+
+            <div class="status-card profile-details">
+
+
+                {% if student %}
+
+
+                <div class="student-avatar">
+                    👨‍🎓
+                </div>
+
+
+                <h3 class="student-name">
+                    {{ student.name }}
+                </h3>
+
+
+                <p class="student-email">
+                    {{ student.email }}
+                </p>
+
+
+                <div class="profile-detail-item">
+
+                    <span>
+                        Roll Number
+                    </span>
+
+                    <strong>
+                        {{ student.roll_no }}
+                    </strong>
+
+                </div>
+
+
+                <div class="profile-detail-item">
+
+                    <span>
+                        Course
+                    </span>
+
+                    <strong>
+                        {{ student.course or "Not available" }}
+                    </strong>
+
+                </div>
+
+
+                <div class="profile-detail-item">
+
+                    <span>
+                        Phone
+                    </span>
+
+                    <strong>
+                        {{ student.phone or "Not available" }}
+                    </strong>
+
+                </div>
+
+
+                <a href="{{ url_for('profile') }}"
+                   class="view-all">
+
+                    View / Edit Profile →
+
+                </a>
+
+
+                {% else %}
+
+
+                <div class="empty-profile">
+
+                    <div>
+                        ⚠️
+                    </div>
+
+                    <h3>
+                        Profile not linked
+                    </h3>
+
+                    <p>
+                        Ask the librarian to add your student
+                        record using your registered email.
+                    </p>
+
+                </div>
+
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         STUDENT QUICK ACTIONS
+    ================================================= -->
+
+    <section class="student-actions">
+
+
+        <div class="section-heading">
+
+            <div>
+
+                <span>
+                    LIBRARY
+                </span>
+
+                <h2>
+                    Quick Actions
+                </h2>
+
+            </div>
+
+            <div class="section-icon">
+                ⚡
+            </div>
+
+        </div>
+
+
+        <div class="action-grid student-action-grid">
+
+
+            <!-- BROWSE -->
+
+            <a href="{{ url_for('books') }}"
+               class="action-card">
+
+                <div class="action-icon">
+                    🔍
+                </div>
+
+                <div>
+
+                    <h3>
+                        Browse Books
+                    </h3>
+
+                    <p>
+                        Search library collection
+                    </p>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- MY BOOKS -->
+
+            <a href="{{ url_for('my_books') }}"
+               class="action-card">
+
+                <div class="action-icon">
+                    📖
+                </div>
+
+                <div>
+
+                    <h3>
+                        My Books
+                    </h3>
+
+                    <p>
+                        View issued and returned books
+                    </p>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </a>
+
+
+            <!-- PROFILE -->
+
+            <a href="{{ url_for('profile') }}"
+               class="action-card">
+
+                <div class="action-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <h3>
+                        My Profile
+                    </h3>
+
+                    <p>
+                        View and update your profile
+                    </p>
+
+                </div>
+
+                <span class="arrow">
+                    →
+                </span>
+
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- STUDENT BANNER -->
+
+    <section class="library-banner">
+
+        <div class="banner-content">
+
+            <span class="banner-icon">
+                🎓
+            </span>
+
+            <div>
+
+                <span class="banner-small">
+                    STUDENT LIBRARY PORTAL
+                </span>
+
+                <h2>
+                    Your personal library at a glance.
+                </h2>
+
+                <p>
+                    Browse books, check your issued books and
+                    view your borrowing history.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>

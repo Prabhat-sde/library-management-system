@@ -1,0 +1,346 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 25px;
+
+    background:
+        radial-gradient(circle at 75% 10%,
+            rgba(245, 158, 11, 0.10),
+            transparent 30%),
+        radial-gradient(circle at 15% 90%,
+            rgba(30, 64, 175, 0.08),
+            transparent 30%),
+        #080f1c;
+
+    color: #f8fafc;
+
+}
+
+
+/* ================= CARD ================= */
+
+.form-container {
+
+    width: 100%;
+
+    max-width: 500px;
+
+    padding: 32px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.065),
+            rgba(255, 255, 255, 0.025));
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.40);
+
+    backdrop-filter: blur(18px);
+
+}
+
+
+/* ================= ICON ================= */
+
+.page-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border-radius: 15px;
+
+    background:
+        rgba(245, 158, 11, 0.10);
+
+    border:
+        1px solid rgba(245, 158, 11, 0.20);
+
+    font-size: 28px;
+
+    box-shadow:
+        0 0 25px rgba(245, 158, 11, 0.08);
+
+}
+
+
+/* ================= BRAND ================= */
+
+.brand {
+
+    text-align: center;
+
+    color: #fbbf24;
+
+    font-size: 10px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 12px;
+
+}
+
+
+/* ================= HEADING ================= */
+
+h1 {
+
+    text-align: center;
+
+    font-size: 26px;
+
+    color: #f8fafc;
+
+}
+
+
+.subtitle {
+
+    text-align: center;
+
+    margin-top: 7px;
+
+    margin-bottom: 28px;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+}
+
+
+/* ================= FORM ================= */
+
+.form-group {
+
+    margin-bottom: 16px;
+
+}
+
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #cbd5e1;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+}
+
+
+.form-group input {
+
+    width: 100%;
+
+    height: 44px;
+
+    padding: 0 13px;
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    color: #f8fafc;
+
+    font-size: 13px;
+
+    transition: .25s;
+
+}
+
+
+.form-group input::placeholder {
+
+    color: #64748b;
+
+}
+
+
+.form-group input:focus {
+
+    border-color:
+        rgba(245, 158, 11, 0.65);
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    box-shadow:
+        0 0 0 3px rgba(245, 158, 11, 0.08);
+
+}
+
+
+/* ================= BUTTONS ================= */
+
+.buttons {
+
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 22px;
+
+}
+
+
+.buttons button,
+.cancel-btn {
+
+    height: 45px;
+
+    flex: 1;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    border: none;
+
+    border-radius: 9px;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    text-decoration: none;
+
+    transition: .25s;
+
+}
+
+
+/* Update */
+
+.buttons button {
+
+    background:
+        linear-gradient(135deg,
+            #fbbf24,
+            #d97706);
+
+    color: #111827;
+
+}
+
+
+.buttons button:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(245, 158, 11, 0.25);
+
+}
+
+
+/* Cancel */
+
+.cancel-btn {
+
+    background:
+        rgba(255, 255, 255, 0.07);
+
+    color: #cbd5e1;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+}
+
+
+.cancel-btn:hover {
+
+    background:
+        rgba(255, 255, 255, 0.12);
+
+    color: white;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 550px) {
+
+    body {
+
+        padding: 15px;
+
+    }
+
+
+    .form-container {
+
+        padding: 25px 20px;
+
+        border-radius: 16px;
+
+    }
+
+
+    h1 {
+
+        font-size: 23px;
+
+    }
+
+
+    .buttons {
+
+        flex-direction: column;
+
+    }
+
+
+    .buttons button,
+    .cancel-btn {
+
+        width: 100%;
+
+    }
+
+}

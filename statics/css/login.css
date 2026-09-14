@@ -1,0 +1,750 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================
+   BODY
+========================= */
+
+body {
+    height: 100vh;
+    overflow: hidden;
+
+    background: #0d1822;
+
+    transition: 0.8s ease;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.container {
+    width: 100%;
+    height: 100vh;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* =========================
+   FLOOR / TABLE LAMP
+========================= */
+
+.floor-lamp {
+    position: absolute;
+
+    left: calc(50% - 250px);
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 150px;
+    height: 260px;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    transition: 0.3s ease;
+}
+
+
+/* =========================
+   LAMP SHADE
+========================= */
+
+.lamp-shade {
+    position: absolute;
+
+    top: 20px;
+    left: 25px;
+
+    width: 100px;
+    height: 75px;
+
+    background: linear-gradient(to bottom,
+            #ddd6c7,
+            #a8a091);
+
+    clip-path: polygon(12% 0,
+            88% 0,
+            100% 100%,
+            0 100%);
+
+    border-radius: 5px;
+
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.5);
+
+    z-index: 5;
+}
+
+
+/* =========================
+   BULB
+========================= */
+
+.bulb {
+    position: absolute;
+
+    bottom: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 55px;
+    height: 25px;
+
+    background: #d8d1bd;
+
+    border-radius: 50% 50% 20% 20%;
+
+    transition: 0.5s ease;
+}
+
+
+/* Bulb ON */
+
+.bulb.glow {
+    background: #ffe8a0;
+
+    box-shadow:
+        0 0 10px #ffe8a0,
+        0 0 25px #ffd66b,
+        0 0 50px #ffd66b;
+}
+
+
+/* =========================
+   LAMP NECK
+========================= */
+
+.lamp-neck {
+    position: absolute;
+
+    top: 92px;
+    left: 69px;
+
+    width: 12px;
+    height: 12px;
+
+    background: #aaa;
+
+    border-radius: 50%;
+}
+
+
+/* =========================
+   LAMP STAND
+========================= */
+
+.lamp-stand {
+    position: absolute;
+
+    top: 98px;
+    left: 73px;
+
+    width: 5px;
+    height: 115px;
+
+    background: linear-gradient(to right,
+            #777,
+            #ddd,
+            #777);
+
+    border-radius: 5px;
+}
+
+
+/* =========================
+   LAMP BASE
+========================= */
+
+.lamp-base {
+    position: absolute;
+
+    bottom: 18px;
+    left: 45px;
+
+    width: 65px;
+    height: 15px;
+
+    background: linear-gradient(to bottom,
+            #eeeeee,
+            #999999);
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+/* =========================
+   LAMP GLOW
+========================= */
+
+.lamp-glow {
+    position: absolute;
+
+    left: calc(50% - 250px);
+    top: calc(50% - 10px);
+
+    transform: translate(-50%, -50%);
+
+    width: 300px;
+    height: 300px;
+
+    border-radius: 50%;
+
+    background: radial-gradient(circle,
+            rgba(255, 220, 120, 0.28) 0%,
+            rgba(255, 210, 100, 0.12) 35%,
+            transparent 70%);
+
+    opacity: 0;
+
+    transition: 0.8s;
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+
+body.light-on .lamp-glow {
+    opacity: 1;
+}
+
+
+/* =========================
+   LOGIN BOX
+========================= */
+
+.login-box {
+
+    position: absolute;
+
+    left: calc(50% + 60px);
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    width: 260px;
+
+    padding: 25px 22px;
+
+    background: rgba(10, 24, 34, 0.92);
+
+    border: 1px solid rgba(255, 194, 75, 0.55);
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 8px rgba(255, 194, 75, 0.35),
+        0 0 25px rgba(255, 194, 75, 0.15);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: 0.7s ease;
+
+    z-index: 10;
+}
+
+
+/* Login Show */
+
+.login-box.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    box-shadow:
+        0 0 10px rgba(255, 194, 75, 0.5),
+        0 0 35px rgba(255, 194, 75, 0.2);
+}
+
+
+/* =========================
+   LOGIN TITLE
+========================= */
+
+.login-box h2 {
+
+    color: #eeeeee;
+
+    text-align: center;
+
+    font-size: 18px;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.login-box form {
+
+    width: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 13px;
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+.login-box input {
+
+    width: 100%;
+
+    padding: 10px;
+
+    background: #172631;
+
+    border: 1px solid #263b48;
+
+    border-radius: 5px;
+
+    outline: none;
+
+    color: white;
+
+    font-size: 12px;
+
+    transition: 0.3s;
+}
+
+
+.login-box input::placeholder {
+
+    color: #71808a;
+}
+
+
+.login-box input:focus {
+
+    border-color: #d9a441;
+
+    box-shadow:
+        0 0 6px rgba(217, 164, 65, 0.3);
+}
+
+
+/* =========================
+   PASSWORD
+========================= */
+
+.password-box {
+
+    position: relative;
+}
+
+
+.password-box input {
+
+    padding-right: 35px;
+}
+
+
+#togglePassword {
+
+    position: absolute;
+
+    right: 10px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    user-select: none;
+}
+
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
+.login-box button {
+
+    width: 100%;
+
+    padding: 10px;
+
+    border: none;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    background: #d9a441;
+
+    color: #111;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+
+.login-box button:hover {
+
+    background: #efbd55;
+
+    box-shadow:
+        0 0 15px rgba(217, 164, 65, 0.5);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   REGISTER
+========================= */
+
+.register-link {
+
+    width: 100%;
+
+    color: #7f8b92;
+
+    text-align: center;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+}
+
+
+.register-link a {
+
+    color: #d9a441;
+
+    text-decoration: none;
+
+    font-weight: bold;
+}
+
+
+.register-link a:hover {
+
+    text-decoration: underline;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.error-message {
+
+    width: 100%;
+
+    padding: 8px;
+
+    background: rgba(220, 38, 38, 0.15);
+
+    border: 1px solid rgba(248, 113, 113, 0.4);
+
+    border-radius: 5px;
+
+    color: #fecaca;
+
+    text-align: center;
+
+    font-size: 10px;
+}
+
+
+/* =========================
+   LAMP HOVER
+========================= */
+
+.floor-lamp:hover {
+
+    transform: translate(-50%, -50%) scale(1.03);
+}
+
+
+/* =========================
+   SWING
+========================= */
+
+@keyframes lampSwing {
+
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    30% {
+        transform: translate(-50%, -50%) rotate(2deg);
+    }
+
+    60% {
+        transform: translate(-50%, -50%) rotate(-2deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+}
+
+
+.floor-lamp.swing {
+
+    animation: lampSwing 0.7s ease;
+}
+
+
+/* =========================
+   PARTICLES
+========================= */
+
+.particles {
+
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+
+.particles span {
+
+    position: absolute;
+
+    width: 3px;
+    height: 3px;
+
+    background: #e8d6a5;
+
+    border-radius: 50%;
+
+    opacity: 0;
+}
+
+
+body.light-on .particles span {
+
+    animation: float 6s linear infinite;
+
+    opacity: 0.5;
+}
+
+
+.particles span:nth-child(1) {
+    left: 15%;
+    animation-delay: 0s;
+}
+
+.particles span:nth-child(2) {
+    left: 30%;
+    animation-delay: 1s;
+}
+
+.particles span:nth-child(3) {
+    left: 45%;
+    animation-delay: 2s;
+}
+
+.particles span:nth-child(4) {
+    left: 60%;
+    animation-delay: 3s;
+}
+
+.particles span:nth-child(5) {
+    left: 75%;
+    animation-delay: 4s;
+}
+
+.particles span:nth-child(6) {
+    left: 85%;
+    animation-delay: 5s;
+}
+
+.particles span:nth-child(7) {
+    left: 50%;
+    animation-delay: 2.5s;
+}
+
+.particles span:nth-child(8) {
+    left: 20%;
+    animation-delay: 4.5s;
+}
+
+
+@keyframes float {
+
+    from {
+        transform: translateY(100vh);
+    }
+
+    to {
+        transform: translateY(-100px);
+    }
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+
+    .floor-lamp {
+
+        left: 25%;
+
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+
+    .lamp-glow {
+
+        left: 25%;
+    }
+
+
+    .login-box {
+
+        left: 70%;
+
+        width: 230px;
+    }
+
+}
+/* =========================
+   RANDOM LIGHT THEMES
+========================= */
+
+/* Warm Yellow */
+body.theme-yellow {
+    --light-color: #ffd54f;
+    --glow-color: rgba(255, 213, 79, 0.35);
+    --button-color: #d9a441;
+}
+
+/* Blue */
+body.theme-blue {
+    --light-color: #64b5f6;
+    --glow-color: rgba(100, 181, 246, 0.35);
+    --button-color: #4a90d9;
+}
+
+/* Purple */
+body.theme-purple {
+    --light-color: #ce93d8;
+    --glow-color: rgba(206, 147, 216, 0.35);
+    --button-color: #a65bb5;
+}
+
+/* Green */
+body.theme-green {
+    --light-color: #81c784;
+    --glow-color: rgba(129, 199, 132, 0.35);
+    --button-color: #4caf50;
+}
+
+/* Orange */
+body.theme-orange {
+    --light-color: #ffb74d;
+    --glow-color: rgba(255, 183, 77, 0.35);
+    --button-color: #f57c00;
+}
+
+
+/* Bulb */
+
+.bulb.glow {
+    background: var(--light-color);
+
+    box-shadow:
+        0 0 15px var(--light-color),
+        0 0 35px var(--light-color),
+        0 0 70px var(--light-color);
+}
+
+
+/* Lamp ambient glow */
+
+body.light-on .lamp-glow {
+    opacity: 1;
+
+    background: radial-gradient(
+        circle,
+        var(--glow-color) 0%,
+        transparent 70%
+    );
+}
+
+
+/* Login card */
+
+.login-box.show {
+    border-color: var(--light-color);
+
+    box-shadow:
+        0 0 10px var(--glow-color),
+        0 0 30px var(--glow-color);
+}
+
+
+/* Login button */
+
+.login-box button {
+    background: var(--button-color);
+}
+
+
+/* Register link */
+
+.register-link a {
+    color: var(--light-color);
+}
+
+
+/* Input focus */
+
+.login-box input:focus {
+    border-color: var(--light-color);
+
+    box-shadow:
+        0 0 8px var(--glow-color);
+}
+
+
+/* Particles */
+
+body.light-on .particles span {
+    background: var(--light-color);
+}

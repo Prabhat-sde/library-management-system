@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Library Books</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/books.css') }}">
+
+</head>
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                📚
+            </div>
+
+            <div>
+
+                <h2>LibraryMS</h2>
+
+                <span>
+                    Management System
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <nav>
+
+            <!-- DASHBOARD -->
+            <a href="{{ url_for('dashboard') }}" class="nav-link">
+
+                <span>🏠</span>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <!-- BOOKS -->
+            <a href="{{ url_for('books') }}" class="nav-link active">
+
+                <span>📚</span>
+                <span>Books</span>
+
+            </a>
+
+
+            <!-- USER ONLY -->
+            {% if role == "user" %}
+
+            <a href="{{ url_for('my_books') }}" class="nav-link">
+
+                <span>📖</span>
+                <span>My Books</span>
+
+            </a>
+
+            {% endif %}
+
+
+            <!-- ADMIN ONLY -->
+            {% if role == "admin" %}
+
+            <div class="menu-title admin-title">
+                ADMINISTRATION
+            </div>
+
+
+            <a href="{{ url_for('add_book') }}" class="nav-link">
+
+                <span>➕</span>
+                <span>Add Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('students') }}" class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Students</span>
+
+            </a>
+
+
+            <a href="{{ url_for('add_student') }}" class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Add Student</span>
+
+            </a>
+
+
+            <a href="{{ url_for('issue_book') }}" class="nav-link">
+
+                <span>📖</span>
+                <span>Issue Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('return_book') }}" class="nav-link">
+
+                <span>🔄</span>
+                <span>Return Book</span>
+
+            </a>
+
+            {% endif %}
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        System Online
+                    </strong>
+
+                    <small>
+                        Library is active
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}" class="logout">
+
+                <span>🚪</span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+
+            <div class="page-heading">
+
+                <span class="small-heading">
+                    LIBRARY COLLECTION
+                </span>
+
+                <h1>
+                    📚 Library Books
+                </h1>
+
+                <p>
+                    Browse and manage all books in the library.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ name }}
+                    </strong>
+
+
+                    {% if role == "admin" %}
+
+                    <span>
+                        👑 Administrator
+                    </span>
+
+                    {% else %}
+
+                    <span>
+                        👤 Library User
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- ================= BOOK HEADER ================= -->
+
+        <section class="collection-header">
+
+
+            <div class="collection-info">
+
+
+                <div class="collection-icon">
+                    📖
+                </div>
+
+
+                <div>
+
+                    <span>
+                        COLLECTION
+                    </span>
+
+                    <h2>
+                        All Books
+                    </h2>
+
+                    <p>
+                        Manage your library's book collection.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if role == "admin" %}
+
+            <a href="{{ url_for('add_book') }}" class="add-book-btn">
+
+                <span>＋</span>
+
+                Add New Book
+
+            </a>
+
+            {% endif %}
+
+
+        </section>
+        <!-- ================= SEARCH & FILTER ================= -->
+
+        <section class="search-filter-card">
+
+            <form method="GET" action="{{ url_for('books') }}" class="search-filter-form">
+
+                <!-- SEARCH -->
+
+                <div class="search-box">
+
+                    <span class="search-icon">🔍</span>
+
+                    <input type="text" name="search" placeholder="Search by book name, author or category..."
+                        value="{{ search }}">
+
+                </div>
+
+
+                <!-- CATEGORY -->
+
+                <div class="category-box">
+
+                    <select name="category">
+
+                        <option value="">
+                            All Categories
+                        </option>
+
+                        {% for cat in categories %}
+
+                        <option value="{{ cat }}" {% if selected_category==cat %} selected {% endif %}>
+
+                            {{ cat }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- SEARCH BUTTON -->
+
+                <button type="submit" class="search-btn">
+
+                    🔍 Search
+
+                </button>
+
+
+                <!-- RESET -->
+
+                <a href="{{ url_for('books') }}" class="reset-btn">
+
+                    ↻ Reset
+
+                </a>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- ================= TABLE ================= -->
+
+        <section class="table-card">
+
+
+            <div class="table-top">
+
+
+                <div>
+
+                    <h3>
+                        Book Collection
+                    </h3>
+
+                    <p>
+                        All registered books
+                    </p>
+
+                </div>
+
+
+                <div class="book-count">
+
+                    📚
+
+                    <span>
+                        {{ books|length }}
+                    </span>
+
+                    Books
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="table-wrapper">
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                BOOK
+                            </th>
+
+                            <th>
+                                AUTHOR
+                            </th>
+
+                            <th>
+                                CATEGORY
+                            </th>
+
+                            <th>
+                                QUANTITY
+                            </th>
+
+
+                            {% if role == "admin" %}
+
+                            <th>
+                                ACTION
+                            </th>
+
+                            {% endif %}
+
+                        </tr>
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for book in books %}
+
+                        <tr>
+
+
+                            <!-- ID -->
+
+                            <td>
+
+                                <span class="book-id">
+                                    #{{ book.id }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- BOOK -->
+
+                            <td>
+
+                                <div class="book-info">
+
+                                    <div class="book-icon">
+                                        📚
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            {{ book.book_name }}
+                                        </strong>
+
+                                        <small>
+                                            Library Collection
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- AUTHOR -->
+
+                            <td>
+
+                                <span class="author">
+                                    {{ book.author }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- CATEGORY -->
+
+                            <td>
+
+                                <span class="category">
+
+                                    {{ book.category }}
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- QUANTITY -->
+
+                            <td>
+
+                                {% if book.quantity > 0 %}
+
+                                <span class="quantity available">
+
+                                    <span></span>
+
+                                    {{ book.quantity }}
+
+                                    Available
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="quantity unavailable">
+
+                                    <span></span>
+
+                                    Out of Stock
+
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- ACTION -->
+
+                            {% if role == "admin" %}
+
+                            <td>
+
+                                <div class="actions">
+
+
+                                    <a href="{{ url_for('edit_book', id=book.id) }}" class="edit-btn">
+
+                                        ✏️
+                                        Edit
+
+                                    </a>
+
+
+                                    <a href="{{ url_for('delete_book', id=book.id) }}" class="delete-btn"
+                                        onclick="return confirm('Delete this book?')">
+
+                                        🗑
+                                        Delete
+
+                                    </a>
+
+
+                                </div>
+
+                            </td>
+
+                            {% endif %}
+
+
+                        </tr>
+
+
+                        {% else %}
+
+                        <tr>
+
+                            <td colspan="6" class="empty-state">
+
+                                <div>
+                                    📚
+                                </div>
+
+                                <h3>
+                                    No Books Found
+                                </h3>
+
+                                <p>
+                                    There are currently no books in the library.
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- BACK -->
+
+        <a href="{{ url_for('dashboard') }}" class="back">
+
+            ← Back to Dashboard
+
+        </a>
+
+
+    </main>
+
+
+</body>
+
+</html>

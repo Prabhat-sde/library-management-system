@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Add New Book | LibraryMS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/add_book.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                📚
+            </div>
+
+            <div>
+
+                <h2>LibraryMS</h2>
+
+                <span>
+                    Management System
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <nav>
+
+
+            <a href="{{ url_for('dashboard') }}"
+               class="nav-link">
+
+                <span>🏠</span>
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('books') }}"
+               class="nav-link">
+
+                <span>📚</span>
+                <span>Books</span>
+
+            </a>
+
+
+            <a href="{{ url_for('students') }}"
+               class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Students</span>
+
+            </a>
+
+
+            <div class="menu-title admin-title">
+                ADMINISTRATION
+            </div>
+
+
+            <a href="{{ url_for('add_book') }}"
+               class="nav-link active">
+
+                <span>➕</span>
+                <span>Add Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('add_student') }}"
+               class="nav-link">
+
+                <span>👨‍🎓</span>
+                <span>Add Student</span>
+
+            </a>
+
+
+            <a href="{{ url_for('issue_book') }}"
+               class="nav-link">
+
+                <span>📖</span>
+                <span>Issue Book</span>
+
+            </a>
+
+
+            <a href="{{ url_for('return_book') }}"
+               class="nav-link">
+
+                <span>🔄</span>
+                <span>Return Book</span>
+
+            </a>
+
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        System Online
+                    </strong>
+
+                    <small>
+                        Library is active
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}"
+               class="logout">
+
+                <span>🚪</span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+
+            <div class="page-heading">
+
+                <span class="small-heading">
+                    BOOK MANAGEMENT
+                </span>
+
+                <h1>
+                    ➕ Add New Book
+                </h1>
+
+                <p>
+                    Add a new book to the library collection.
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ name }}
+                    </strong>
+
+                    <span>
+                        👑 Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </header>
+
+
+
+        <!-- ================= FORM AREA ================= -->
+
+        <section class="content-grid">
+
+
+            <!-- FORM CARD -->
+
+            <div class="form-card">
+
+
+                <div class="card-heading">
+
+                    <div class="heading-icon">
+                        📚
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Book Information
+                        </h2>
+
+                        <p>
+                            Enter the details of the new book.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <form method="POST"
+                      action="{{ url_for('add_book') }}">
+
+
+                    <!-- BOOK NAME -->
+
+                    <div class="input-group">
+
+                        <label for="book_name">
+                            Book Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>📖</span>
+
+                            <input
+                                type="text"
+                                id="book_name"
+                                name="book_name"
+                                placeholder="Enter book name"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- AUTHOR -->
+
+                    <div class="input-group">
+
+                        <label for="author">
+                            Author Name
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>✍️</span>
+
+                            <input
+                                type="text"
+                                id="author"
+                                name="author"
+                                placeholder="Enter author name"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CATEGORY -->
+
+                    <div class="input-group">
+
+                        <label for="category">
+                            Category
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>🏷️</span>
+
+                            <input
+                                type="text"
+                                id="category"
+                                name="category"
+                                placeholder="e.g. Programming, Science">
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- QUANTITY -->
+
+                    <div class="input-group">
+
+                        <label for="quantity">
+                            Quantity
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>🔢</span>
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                placeholder="Enter quantity"
+                                min="1"
+                                required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- BUTTON -->
+
+                    <button type="submit"
+                            class="submit-btn">
+
+                        <span>＋</span>
+
+                        Add Book to Library
+
+                    </button>
+
+
+                </form>
+
+
+
+                <a href="{{ url_for('books') }}"
+                   class="back">
+
+                    ← View All Books
+
+                </a>
+
+
+            </div>
+
+
+
+            <!-- INFO CARD -->
+
+            <div class="info-card">
+
+
+                <div class="book-preview">
+
+                    <div class="book-icon">
+                        📚
+                    </div>
+
+                    <div class="book-glow"></div>
+
+                </div>
+
+
+                <span class="preview-label">
+                    LIBRARY COLLECTION
+                </span>
+
+
+                <h2>
+                    Add a New Book
+                </h2>
+
+
+                <p>
+                    Keep your library collection organized by
+                    adding complete and accurate book details.
+                </p>
+
+
+                <div class="tips">
+
+
+                    <div class="tip">
+
+                        <span>✓</span>
+
+                        <div>
+
+                            <strong>
+                                Book Details
+                            </strong>
+
+                            <small>
+                                Enter the correct title and author.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tip">
+
+                        <span>✓</span>
+
+                        <div>
+
+                            <strong>
+                                Category
+                            </strong>
+
+                            <small>
+                                Helps organize books easily.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="tip">
+
+                        <span>✓</span>
+
+                        <div>
+
+                            <strong>
+                                Quantity
+                            </strong>
+
+                            <small>
+                                Enter the available copies.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

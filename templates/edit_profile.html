@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Profile | LibraryMS</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+
+    <style>
+
+        /* =====================================================
+   EDIT PROFILE (EXACT MATCH WITH MAIN DASHBOARD THEME)
+===================================================== */
+
+.edit-profile-container {
+    max-width: 780px;
+    margin: 0 auto;
+}
+
+.edit-profile-card {
+    padding: 32px;
+    border-radius: 15px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.edit-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.edit-avatar {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    color: #fbbf24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.edit-profile-header h1 {
+    margin: 0;
+    font-size: 22px;
+    color: #f8fafc;
+}
+
+.edit-profile-header p {
+    margin-top: 4px;
+    color: #64748b;
+    font-size: 12px;
+}
+
+/* FORM ELEMENTS */
+
+.form-group {
+    margin-bottom: 22px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.8px;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.form-group input {
+    width: 100%;
+    height: 44px;
+    box-sizing: border-box;
+    padding: 0 16px;
+    border-radius: 10px;
+    background: #0b1424;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    font-size: 13px;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
+}
+
+.role-box {
+    display: flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #fbbf24;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.password-note {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 6px;
+}
+
+/* ACTION BUTTONS */
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.save-button,
+.cancel-button {
+    height: 44px;
+    padding: 0 24px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.save-button {
+    background: linear-gradient(135deg, #fbbf24, #d97706);
+    color: #111827;
+}
+
+.save-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+}
+
+.cancel-button {
+    background: rgba(255, 255, 255, 0.05);
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cancel-button:hover {
+    background: rgba(255, 255, 255, 0.09);
+    color: #f8fafc;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 600px) {
+    .edit-profile-card {
+        padding: 20px;
+    }
+
+    .edit-profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .save-button,
+    .cancel-button {
+        width: 100%;
+    }
+}
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                📚
+            </div>
+
+            <div>
+
+                <h2>
+                    LibraryMS
+                </h2>
+
+                <span>
+                    Management System
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-title">
+            MAIN MENU
+        </div>
+
+
+        <nav>
+
+
+            <a href="{{ url_for('dashboard') }}"
+               class="nav-link">
+
+                <span>🏠</span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('books') }}"
+               class="nav-link">
+
+                <span>📚</span>
+
+                <span>
+                    Browse Books
+                </span>
+
+            </a>
+
+
+            <div class="menu-title admin-title">
+                ADMINISTRATION
+            </div>
+
+
+            <a href="{{ url_for('add_book') }}"
+               class="nav-link">
+
+                <span>➕</span>
+
+                <span>
+                    Add Book
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('students') }}"
+               class="nav-link">
+
+                <span>👨‍🎓</span>
+
+                <span>
+                    Students
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('add_student') }}"
+               class="nav-link">
+
+                <span>👨‍🎓</span>
+
+                <span>
+                    Add Student
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('issue_book') }}"
+               class="nav-link">
+
+                <span>📖</span>
+
+                <span>
+                    Issue Book
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('return_book') }}"
+               class="nav-link">
+
+                <span>🔄</span>
+
+                <span>
+                    Return Book
+                </span>
+
+            </a>
+
+
+            <a href="{{ url_for('student_history') }}"
+               class="nav-link">
+
+                <span>📊</span>
+
+                <span>
+                    Student History
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="system-status">
+
+                <span class="status-dot"></span>
+
+                <div>
+
+                    <strong>
+                        System Online
+                    </strong>
+
+                    <small>
+                        Library is active
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <a href="{{ url_for('logout') }}"
+               class="logout">
+
+                <span>🚪</span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div class="welcome-heading">
+
+                <span class="small-heading">
+                    ACCOUNT SETTINGS
+                </span>
+
+                <h1>
+                    Edit Profile
+                </h1>
+
+                <p>
+                    Update your administrator information.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('profile') }}"
+               class="profile">
+
+                <div class="profile-avatar">
+                    👤
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>
+                        {{ user.name }}
+                    </strong>
+
+                    <span>
+                        👑 Administrator
+                    </span>
+
+                </div>
+
+            </a>
+
+        </header>
+
+
+        <!-- EDIT PROFILE -->
+
+        <section class="edit-profile-container">
+
+
+            <div class="edit-profile-card">
+
+
+                <div class="edit-profile-header">
+
+                    <div class="edit-avatar">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <h1>
+                            Administrator Profile
+                        </h1>
+
+                        <p>
+                            Update your personal details
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form method="POST">
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            👤 Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="name"
+                            value="{{ user.name }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label>
+                            📧 Email
+                        </label>
+
+                        <input
+                            type="email"
+                            name="email"
+                            value="{{ user.email }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            📱 Phone Number
+                        </label>
+
+                        <input
+                            type="tel"
+                            name="phone"
+                            value="{{ user.phone or '' }}"
+                            placeholder="Enter phone number"
+                        >
+
+                    </div>
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label>
+                            🔐 New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Enter new password"
+                        >
+
+                        <div class="password-note">
+                            Leave blank if you don't want to change the password.
+                        </div>
+
+                    </div>
+
+
+                    <!-- ROLE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            👑 Role
+                        </label>
+
+                        <div class="role-box">
+                            Administrator
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="form-actions">
+
+                        <button
+                            type="submit"
+                            class="save-button">
+
+                            💾 Save Changes
+
+                        </button>
+
+
+                        <a
+                            href="{{ url_for('profile') }}"
+                            class="cancel-button">
+
+                            Cancel
+
+                        </a>
+
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Book | LibraryMS</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_books.css') }}">
+
+</head>
+
+
+<body>
+
+
+    <div class="form-container">
+
+
+        <!-- Header -->
+
+        <div class="page-icon">
+            ✏️
+        </div>
+
+
+        <div class="brand">
+            📚 LibraryMS
+        </div>
+
+
+        <h1>
+            Edit Book
+        </h1>
+
+
+        <p class="subtitle">
+            Update the details of this book
+        </p>
+
+
+
+        <!-- Form -->
+
+        <form method="POST">
+
+
+            <div class="form-group">
+
+                <label for="book_name">
+                    Book Name
+                </label>
+
+                <input type="text" id="book_name" name="book_name" value="{{ book.book_name }}"
+                    placeholder="Enter book name" required>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="author">
+                    Author
+                </label>
+
+                <input type="text" id="author" name="author" value="{{ book.author }}" placeholder="Enter author name"
+                    required>
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="category">
+                    Category
+                </label>
+
+                <input type="text" id="category" name="category" value="{{ book.category }}"
+                    placeholder="e.g. Programming, Science, Fiction">
+
+            </div>
+
+
+
+            <div class="form-group">
+
+                <label for="quantity">
+                    Quantity
+                </label>
+
+                <input type="number" id="quantity" name="quantity" value="{{ book.quantity }}" min="1"
+                    placeholder="Enter quantity" required>
+
+            </div>
+
+
+
+            <button type="submit">
+
+                <span>💾</span>
+                Update Book
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- Back -->
+
+        <a href="{{ url_for('books') }}" class="back">
+
+            ← Back to Books
+
+        </a>
+
+
+    </div>
+
+
+</body>
+
+</html>

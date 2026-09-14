@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Library Login</title>
+
+    <!-- Login CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Particles -->
+        <div class="particles">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Lamp -->
+        <div class="floor-lamp" id="lamp">
+
+            <div class="lamp-shade">
+                <div class="bulb"></div>
+            </div>
+
+            <div class="lamp-neck"></div>
+
+            <div class="lamp-stand"></div>
+
+            <div class="lamp-base"></div>
+
+        </div>
+
+        <!-- Light -->
+        <div class="lamp-glow"></div>
+
+        <!-- Login Box -->
+        <div class="login-box" id="loginBox">
+
+            <h2>Library Login</h2>
+
+            <form method="POST" action="{{ url_for('login') }}">
+
+                {% if error %}
+                <div class="error-message">
+                    {{ error }}
+                </div>
+                {% endif %}
+
+                <!-- Email -->
+                <input type="email" name="email" placeholder="Email" required>
+
+
+                <!-- Password -->
+                <div class="password-box">
+
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+
+                    <span id="togglePassword">👁️</span>
+
+                </div>
+
+
+                <!-- Login Button -->
+                <button type="submit">
+                    Login
+                </button>
+
+
+                <p class="register-link">
+
+                    Don't have an account?
+
+                    <a href="{{ url_for('register') }}">
+                        Register
+                    </a>
+
+                </p>
+
+            </form>
+
+        </div>
+
+
+        <!-- Register -->
+
+
+    </div>
+
+
+    <!-- Login JavaScript -->
+    <script src="{{ url_for('static', filename='javascript/login.js') }}"></script>
+
+</body>
+
+</html>
